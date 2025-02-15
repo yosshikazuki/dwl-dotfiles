@@ -1,0 +1,3 @@
+#!/bin/bash
+dwlb & 
+someblocks -p | dwlb -status-stdin all &
