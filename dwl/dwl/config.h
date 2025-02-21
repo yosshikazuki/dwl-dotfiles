@@ -38,10 +38,11 @@ static const char *const autostart[] = {
 
 /* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
 static const Rule rules[] = {
-	/* app_id             title       tags mask     isfloating   monitor */
+	/* app_id             title       tags mask     isfloating  isterm  noswallow  monitor */
 	/* examples: */
-	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
+	{ "Gimp_EXAMPLE",     NULL,       0,            1,          0,      0,         -1 }, /* Start on currently visible tags floating, not tiled */
+	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,          0,      0,         -1 }, /* Start on ONLY tag "9" */
+	{ "foot",             NULL,       0,            0,          1,      1,         -1 }, /* make foot swallow clients that are not foot */
 };
 
 /* layout(s) */
@@ -143,7 +144,7 @@ static const char *termcmd[] = { "foot", NULL };
 static const char *menucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *screenshotcmd[] = { "/home/yosshikazuki/.local/bin/capture", NULL };
 static const char *statusbarcmd[] = { "/home/yosshikazuki/dwl/setStatusbar", NULL };
-static const char *sleepcmd[] = { "systemctl", "suspend", NULL };
+static const char *powermenucmd[] = { "/home/yosshikazuki/.local/bin/powermenu.sh", NULL };
 static const char *volupcmd[] = { "pactl", "set-sink-volume", "audio_effect.j293-convolver", "+10%", NULL };
 static const char *voldowncmd[] = { "pactl", "set-sink-volume", "audio_effect.j293-convolver", "-10%", NULL };
 
@@ -156,7 +157,7 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     spawn,          {.v = termcmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_S,          spawn,          {.v = screenshotcmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_R,          spawn,          {.v = statusbarcmd} },
-	{ WLR_MODIFIER_LOGO,         XKB_KEY_space,      spawn,          {.v = sleepcmd} },
+	{ WLR_MODIFIER_LOGO,         XKB_KEY_space,      spawn,          {.v = powermenucmd} },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_k,          spawn,          {.v = volupcmd}},
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_j,          spawn,          {.v = voldowncmd}},
 	{ MODKEY,                    XKB_KEY_b,          togglebar,       {0}},
