@@ -60,12 +60,17 @@ static const Layout layouts[] = {
 */
 /* NOTE: ALWAYS add a fallback rule, even if you are completely sure it won't be used */
 static const MonitorRule monrules[] = {
-	/* name       mfact  nmaster scale layout       rotate/reflect                x    y */
-	/* example of a HiDPI laptop monitor:
-	{ "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
-	*/
+	/* name       mfact nmaster scale layout       rotate/reflect              x  y  resx resy rate mode adaptive*/
+	/* example of a HiDPI laptop monitor at 120Hz:
+        { "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, 0, 0, 0, 0, 120.000f, 1, 1},
+        * mode let's the user decide on how dwl should implement the modes:
+        * -1 Sets a custom mode following the users choice
+        * All other number's set the mode at the index n, 0 is the standard mode; see wlr-randr
+        */
+	{ "eDP-1",    0.55f,  1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   0,  0, 2560, 1600, 60.0f, 0, 0 },
+	{ "DVI-I-1",  0.55f,  1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   2560,  0, 1920, 1080, 60.0f, 0, 0 },
 	/* defaults */
-	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1, 0, 0, 0, 0, 0 },
 };
 
 /* keyboard */
@@ -147,6 +152,7 @@ static const char *statusbarcmd[] = { "/home/yosshikazuki/dwl/setStatusbar", NUL
 static const char *powermenucmd[] = { "/home/yosshikazuki/.local/bin/powermenu.sh", NULL };
 static const char *volupcmd[] = { "pactl", "set-sink-volume", "audio_effect.j293-convolver", "+10%", NULL };
 static const char *voldowncmd[] = { "pactl", "set-sink-volume", "audio_effect.j293-convolver", "-10%", NULL };
+static const char *bluetoothcmd[] = { "/home/yosshikazuki/.local/bin/bluetoothconnect", NULL };
 
 #include "shiftview.c" 
 
@@ -160,6 +166,7 @@ static const Key keys[] = {
 	{ WLR_MODIFIER_LOGO,         XKB_KEY_space,      spawn,          {.v = powermenucmd} },
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_k,          spawn,          {.v = volupcmd}},
 	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_j,          spawn,          {.v = voldowncmd}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,          spawn,          {.v = bluetoothcmd}},
 	{ MODKEY,                    XKB_KEY_b,          togglebar,       {0}},
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
